@@ -3,6 +3,12 @@ import numpy as np
 left = [36, 37, 38, 39, 40, 41]
 right = [42, 43, 44, 45, 46, 47]
 
+class Eye:
+    def __init__(self):
+        self.x_ratio = None
+        self.y_ratio = None
+        self.status = None
+
 def eye_on_mask(mask, side, shape):
     """
     Create ROI on mask of the size of eyes and also find the extreme points of each eye
@@ -35,8 +41,11 @@ def eye_on_mask(mask, side, shape):
 
 def find_eyeball_position(end_points, cx, cy):
     """Find and return the eyeball positions, i.e. left or right or top or normal"""
-    x_ratio = (end_points[0] - cx)/(cx - end_points[2])
-    y_ratio = (cy - end_points[1])/(end_points[3] - cy)
+    if cx != end_points[2]:
+        x_ratio = (end_points[0] - cx)/(cx - end_points[2])
+    if cy != end_points[3]:
+        y_ratio = (cy - end_points[1])/(end_points[3] - cy)
+        
     if x_ratio > 3:
         return 1
     elif x_ratio < 0.33:
@@ -127,22 +136,22 @@ def print_eye_pos(img, left, right):
     None.
 
     """
-    text = 'Eyes straight'
+    text = 'eye straight'
     if left == right and left != 0:
+        
         if left == 1:
-            #print('Eyes left')
-            text = 'Eyes left'
+            #print('eye left')
+            text = 'eye left'
         elif left == 2:
-            #print('Eyes right')
-            text = 'Eyes right'
+            #print('eye right')
+            text = 'eye right'
         elif left == 3:
-            #print('Eyes up')
-            text = 'Eyes up'
+            #print('eye up')
+            text = 'eye up'
         font = cv2.FONT_HERSHEY_SIMPLEX 
-    cv2.putText(img, text, (30, 150), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2) 
+    cv2.putText(img, text, (15,85),cv2.FONT_HERSHEY_SIMPLEX , 0.5, (255,0,0),2) 
         
 def eye_tracking(img, shape, threshold = 75):
-    
     thresh = img.copy()
     kernel = np.ones((9, 9), np.uint8)
 

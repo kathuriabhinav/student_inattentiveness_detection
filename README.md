@@ -1,20 +1,25 @@
 # ivp-online-proctoring-system
-IVP mini project
 
-Dependencies: (command to install : pip install "library")
-- face_recognition
-- imutils
-- mediapipe
-- cv2
-- dlib
+ivp-online-proctoring-system
 
- 
-Issues:
-- Noface count, face_verif and multiple count for each frame happening
-- Not drawing multiple boxes if multiple faces detected
-- Looking down is being treated as looking up in eyeGazeTracking
-- Use of Threading
-- Using old version of sklearn(0.19.1) for facespoof_det.py
-- Mobile detection
-- Warnings in headpose estimation (ang2 = ...., m1-m2..)
-- (solved)RAM is not getting cleared after ending proctoring system : Use exit() at end of code.
+Instructions to run this project
+
+1. we used anaconda environments to manage dependencies for this project so to begin with download anaconda installer from [here](https://www.anaconda.com/products/individual#Downloads) .
+2. create a new environment and install the following dependent python libraries in the new environment using `conda` or `pip` as `pip install "libraryname"` for the following libraries.
+
+```
+cmake
+scipy
+opencv
+dlib
+imutils
+mediapipe
+tensorflow==2.6.0
+```
+
+YOU COULD DO SAME USING A `virtualenv` using python 3.7+\*
+
+3. Now run the main function in the source code `python main.py` to start the proctoring system.
+4. First register yourself on the first screen by pressing `r` to capture you images for 5 times.
+5. Now monitoring will begin and will end after you press the `esc` key .
+6. The reports generated will be stored in the `./results` folder.
