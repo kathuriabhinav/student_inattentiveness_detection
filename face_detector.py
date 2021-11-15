@@ -15,6 +15,8 @@ class Face:
         self.eye = None
         self.spoof = None
         self.spoof_score = None
+        self.emotion = None
+        self.emotion_score = None
 
 # Crop face based on its bounding box
 def get_face(frame, bbox):
