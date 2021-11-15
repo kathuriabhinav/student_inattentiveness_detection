@@ -42,6 +42,10 @@ def print_faces(frame, faces):
             cv2.putText(frame, "MAR:"+str(round(face.mouth.mar,4)),(x+w+5, y+82), cv2.FONT_HERSHEY_PLAIN, 0.9, (153,0,0), 1)
             cv2.putText(frame, face.mouth.status, (15,55), font, 0.5, (255,0,0),2)
         
+        # Face emotion
+        if face.emotion:
+            cv2.putText(frame, face.emotion+" : "+str(round(face.emotion_score,3)),(x+w+5, y+100), cv2.FONT_HERSHEY_PLAIN, 0.9, (153,0,0) if face.emotion == "neutral" else (0,255,0), 1)
+
     return frame
 
 
