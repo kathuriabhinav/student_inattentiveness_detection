@@ -48,7 +48,7 @@ if __name__ == "__main__":
         #     cv2.putText(frame, "Cheating suspected", (15,105), font, 0.5, (0,0,255),2)
         
         frame=cv2.resize(frame,(1200,800))
-        cv2.imshow('MONITORING ON',  frame)
+        cv2.imshow('Monitoring On',  frame)
                 
         if cv2.waitKey(1) & 0xFF == 27: 
             break

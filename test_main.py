@@ -32,7 +32,7 @@ while(True):
             hland = detect_landmarks(frame, faces) 
             frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn = sleep_main(frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn)
         frame = utils.print_faces(frame, faces)
-    cv2.imshow('PROCTORING ON',  frame)
+    cv2.imshow('Monitoring On',  frame)
             
     if cv2.waitKey(1) & 0xFF == 27: 
         break

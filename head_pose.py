@@ -105,7 +105,7 @@ def headpose_est(frame, faces, hland):
                     image_points,
                     camera_matrix,
                     dist_coeffs,
-                    flags=cv2.cv2.SOLVEPNP_ITERATIVE,
+                    flags=cv2.SOLVEPNP_ITERATIVE,
                 )
 
 
