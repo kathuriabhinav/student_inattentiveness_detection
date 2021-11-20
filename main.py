@@ -10,6 +10,15 @@ from mouth_detector import mouth_open
 from emotion import emotion_recog
 # from cheating_detector import *
 # from plot_graphs import *
+from sleep import sleep_main
+
+sleep_flag = 0
+yawn_flag = 0
+count_mouth = 0
+
+counter = 0
+total = 0
+total_yawn = 0
 
 font = cv2.FONT_HERSHEY_SIMPLEX 
 pTime = [0]
@@ -22,7 +31,7 @@ pTime = [0]
 
 if __name__ == "__main__":
     cap = cv2.VideoCapture(0)
-    cv2.namedWindow('MONITORING ON')
+    #cv2.namedWindow('MONITORING ON')
     frames=[]
     while(True):
 
@@ -38,6 +47,7 @@ if __name__ == "__main__":
             # spoof_detector(faces)
             if len(faces)==1:
                 hland = detect_landmarks(frame, faces) 
+                frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn = sleep_main(frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn)
                 if faces[0].landmarks:
                     faces[0].head = headpose_est(frame, faces, hland)
                     faces[0].mouth = mouth_open(frame, faces)
@@ -47,7 +57,7 @@ if __name__ == "__main__":
         # if cheat_temp.cheat>0:
         #     cv2.putText(frame, "Cheating suspected", (15,105), font, 0.5, (0,0,255),2)
         
-        frame=cv2.resize(frame,(1200,800))
+        #frame=cv2.resize(frame,(1200,800))
         cv2.imshow('Monitoring On',  frame)
                 
         if cv2.waitKey(1) & 0xFF == 27: 
