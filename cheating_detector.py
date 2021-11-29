@@ -4,7 +4,6 @@ class Frame:
         self.count = 0
         self.cheatcount = 0
         self.noface = 0
-        self.multiface = 0
         self.facerec = 0
         self.head = 0
         self.mouth = 0
@@ -25,8 +24,7 @@ def detect_cheating_frame(faces,frames):
     bool_flag=0
     if faces:
         if(len(faces)!=1):
-            frame.multiface = 1
-            bool_flag+=1
+            pass
 
         for face in faces:
             if face.name=="Unknown":
@@ -78,7 +76,6 @@ def detect_cheating_segment(frames, fps):
     window_length = 5
     per = 0.2
     noface_cheat_threshold = 0.3
-    multiface_cheat_threshold = 0.3
     facerec_cheat_threshold = 0.6
     head_cheat_threshold = 0.3
     mouth_cheat_threshold = 0.6
@@ -95,7 +92,6 @@ def detect_cheating_segment(frames, fps):
     segments = []       
     
     noface_per_frame = list(map(lambda x: x.noface , frames))
-    multiface_per_frame = list(map(lambda x: x.multiface , frames))
     facerec_per_frame = list(map(lambda x: x.facerec , frames))
     head_per_frame = list(map(lambda x: x.head , frames))
     mouth_per_frame = list(map(lambda x: x.mouth , frames))
@@ -108,7 +104,6 @@ def detect_cheating_segment(frames, fps):
         j = i+numframes_wd if i+numframes_wd < num_frames else num_frames-1
         
         noface_mean = sum(noface_per_frame[i:j+1]) / (j-i+1)
-        multiface_mean = sum(multiface_per_frame[i:j+1]) / (j-i+1)
         facerec_mean = sum(facerec_per_frame[i:j+1]) / (j-i+1)
         head_mean = sum(head_per_frame[i:j+1]) / (j-i+1)
         mouth_mean = sum(mouth_per_frame[i:j+1]) / (j-i+1)
@@ -122,7 +117,6 @@ def detect_cheating_segment(frames, fps):
         segments.append(seg)
 
         if((noface_mean>=noface_cheat_threshold) 
-        or (multiface_mean>=multiface_cheat_threshold) 
         or (facerec_mean>=facerec_cheat_threshold) 
         or (head_mean>=head_cheat_threshold) 
         or (mouth_mean>=mouth_cheat_threshold) 
