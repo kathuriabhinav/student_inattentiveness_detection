@@ -30,16 +30,17 @@ counter = 0
 total = 0
 total_yawn = 0
 
-
+video_path = 0
 font = cv2.FONT_HERSHEY_SIMPLEX 
 pTime = [0]
 
 # Register User
 frmodel = loadFaceNet512Model()
-input_embeddings, input_im_list = register_user(frmodel,0)
+input_embeddings, input_im_list = register_user(frmodel, 0)
 
 if __name__ == "__main__":
-    cap = cv2.VideoCapture(0)
+    
+    cap = cv2.VideoCapture(video_path)
     cv2.namedWindow('MONITORING ON')
     frames=[]
     t1 = time.time()
