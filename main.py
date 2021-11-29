@@ -19,6 +19,17 @@ from plot_graphs import *
 # Utils
 import cv2
 from utils import register_user, print_fps, print_faces
+#sleep
+from sleep import sleep_main
+
+sleep_flag = 0
+yawn_flag = 0
+count_mouth = 0
+
+counter = 0
+total = 0
+total_yawn = 0
+
 
 font = cv2.FONT_HERSHEY_SIMPLEX 
 pTime = [0]
@@ -47,6 +58,7 @@ if __name__ == "__main__":
         headpose_est(frame, faces)
         mouth_open(faces)
         emotion_recog(faces)
+        frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn = sleep_main(frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn)
 
         print_faces(frame, faces)
 
@@ -56,6 +68,7 @@ if __name__ == "__main__":
             cv2.putText(frame, "Cheating suspected", (15,130), font, 0.5, (0,0,255),2)
 
         cv2.imshow('PROCTORING ON',  frame)
+
         if cv2.waitKey(1) & 0xFF == 27: 
             break
 

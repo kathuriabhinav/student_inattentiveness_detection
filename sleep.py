@@ -72,8 +72,7 @@ def sleep_main(frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn):
                     print("You are yawning")
                     yawn_flag = 1
                     total_yawn += 1
-                    cv2.putText(frame, "Yawn Detected", (150, 150),
-            cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+                    cv2.putText(frame, "Yawn Detected", (300, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
                 else:
                     yawn_flag = 1
             else:
@@ -87,8 +86,7 @@ def sleep_main(frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn):
             if counter >= EYE_AR_CONSEC_FRAMES:
                 if sleep_flag < 0:
                     print("You are sleeping.")
-                    cv2.putText(frame, "Sleep Detected", (150, 150),
-            cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+                    cv2.putText(frame, "Sleep Detected", (300, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
                     sleep_flag = 1
                     total += 1
             else:
@@ -97,14 +95,10 @@ def sleep_main(frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn):
             counter = 0
             sleep_flag = -1
 
-        cv2.putText(frame, "Total Sleeps: {}".format(total), (10, 30),
-            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-        cv2.putText(frame, "Total Yawns: {}".format(total_yawn), (10, 70),
-            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-        cv2.putText(frame, "EAR: {:.2f}".format(ear), (300, 30),
-			cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
-        cv2.putText(frame, "MAR: {:.2f}".format(mouthEAR), (540, 30),
-			cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+        cv2.putText(frame, "Total Sleeps: {}".format(total), (15,130), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+        cv2.putText(frame, "Total Yawns: {}".format(total_yawn), (15,105), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+        cv2.putText(frame, "EAR: {:.2f}".format(ear), (15,155), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+        cv2.putText(frame, "MAR: {:.2f}".format(mouthEAR), (15,180), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
         if total+total_yawn > 4:
             print("playing sound")
             engine.say("You are sleeping. Please be Attentive")
