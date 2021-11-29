@@ -25,14 +25,17 @@ from sleep import sleep_main
 sleep_flag = 0
 yawn_flag = 0
 count_mouth = 0
-
 counter = 0
 total = 0
 total_yawn = 0
-
-video_path = 0
 font = cv2.FONT_HERSHEY_SIMPLEX 
 pTime = [0]
+
+###########################
+video_path = ""
+outputvideo_fps = 
+###########################
+
 
 # Register User
 frmodel = loadFaceNet512Model()
@@ -41,6 +44,13 @@ input_embeddings, input_im_list = register_user(frmodel, 0)
 if __name__ == "__main__":
     
     cap = cv2.VideoCapture(video_path)
+    frame_width = int(cap.get(3))
+    frame_height = int(cap.get(4))
+    size = (frame_width, frame_height)
+    result = cv2.VideoWriter('output_video.avi', 
+                         cv2.VideoWriter_fourcc(*'MJPG'),
+                         outputvideo_fps, size)
+
     cv2.namedWindow('MONITORING ON')
     frames=[]
     t1 = time.time()
@@ -69,6 +79,7 @@ if __name__ == "__main__":
             cv2.putText(frame, "INATTENTIVE", (15,150), font, 1, (0,0,255),2)
 
         cv2.imshow('MONITORING ON',  frame)
+        result.write(frame)
 
         if cv2.waitKey(1) & 0xFF == 27: 
             break
@@ -78,6 +89,7 @@ if __name__ == "__main__":
         fps = int(frames[-1].count/(t2-t1))
 
     cap.release()
+    result.release()
     cv2.destroyAllWindows()
 
 
