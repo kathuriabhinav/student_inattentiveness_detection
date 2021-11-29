@@ -32,8 +32,8 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 pTime = [0]
 
 ###########################
-video_path = ""
-outputvideo_fps = 
+video_path = 0#"dataset/anirudh.mp4"
+outputvideo_fps = 18
 ###########################
 
 

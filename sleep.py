@@ -20,24 +20,27 @@ engine.setProperty('rate',rate - 50)
 #     144        153                 380       373
 #          145                            374
 
-EYE_AR_THRESH = 0.27  #threshold for blink
-EYE_AR_CONSEC_FRAMES = 25 #consecutive considered true
-MOUTH_THRESHOLD = 40
+EYE_AR_THRESH = 0.10  #threshold for blink
+EYE_AR_CONSEC_FRAMES = 15 #consecutive considered true
+MOUTH_THRESHOLD = 0.9
 
 def eye_aspect_ratio(landmarks, dir):
-    ear = EYE_AR_THRESH + 0.02
-    if landmarks.shape[0] >=314:
-        if dir == "left":
-            A = dist.euclidean(landmarks[160,:], landmarks[144,:])
-            B = dist.euclidean(landmarks[159,:], landmarks[145,:])
-            C = dist.euclidean(landmarks[158,:], landmarks[153,:])
-            D = dist.euclidean(landmarks[33,:], landmarks[133,:]) 
-        elif dir == "right":
-            A = dist.euclidean(landmarks[385,:], landmarks[380,:])
-            B = dist.euclidean(landmarks[386,:], landmarks[374,:])
-            C = dist.euclidean(landmarks[387,:], landmarks[373,:])
-            D = dist.euclidean(landmarks[362,:], landmarks[263,:]) 
-        ear = (A+B+C)/(2*D)
+    ear = 0
+    try:
+        if landmarks.shape[0] >=314:
+            if dir == "left":
+                A = dist.euclidean(landmarks[160,:], landmarks[144,:])
+                B = dist.euclidean(landmarks[159,:], landmarks[145,:])
+                C = dist.euclidean(landmarks[158,:], landmarks[153,:])
+                D = dist.euclidean(landmarks[33,:], landmarks[133,:]) 
+            elif dir == "right":
+                A = dist.euclidean(landmarks[385,:], landmarks[380,:])
+                B = dist.euclidean(landmarks[386,:], landmarks[374,:])
+                C = dist.euclidean(landmarks[387,:], landmarks[373,:])
+                D = dist.euclidean(landmarks[362,:], landmarks[263,:]) 
+            ear = (A+B+C)/(3*D)
+    except:
+        pass
     return ear
 
 # Mouth mediapipe landmarks: 
@@ -47,12 +50,16 @@ inner_bottom = [78,95,88,178,87,14,317,402,318,324,308]
 inner_top = [78,191,80,81,82,13,312,311,310,415,308]
 
 def mouth_aspect_ratio(landmarks):
-    mar = MOUTH_THRESHOLD + 0.02
-    if landmarks.shape[0] >=314: 
-            A = dist.euclidean(landmarks[37,:], landmarks[84,:]) # 51, 59 # media(37,84)
-            B = dist.euclidean(landmarks[0,:], landmarks[17,:]) # 52, 58 #media(0,17)
-            C = dist.euclidean(landmarks[267,:], landmarks[314,:]) # 53, 57 # media(267,314)        
-            mar = (A+B+C)/3
+    mar = 0
+    try:
+        if landmarks.shape[0] >=314: 
+                A = dist.euclidean(landmarks[37,:], landmarks[84,:])   # 51, 59 # media(37,84)
+                B = dist.euclidean(landmarks[0,:], landmarks[17,:])    # 52, 58 #media(0,17)
+                C = dist.euclidean(landmarks[267,:], landmarks[314,:]) # 53, 57 # media(267,314)        
+                D = dist.euclidean(landmarks[61,:], landmarks[291,:])  # 49, 55 #media(61,291)
+                mar = (A+B+C)/(3*D)
+    except:
+        pass
     return mar
 
 def sleep_main(faces,frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn):
