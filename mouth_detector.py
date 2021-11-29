@@ -1,12 +1,6 @@
 from scipy.spatial import distance as dist
-from imutils import face_utils
-from threading import Thread
 import numpy as np
-import argparse
-import imutils
-import time
-import dlib
-import cv2
+
 
 class Mouth:
     def __init__(self):
@@ -22,11 +16,29 @@ def mouth_aspect_ratio(landmarks):
 	    return mar
     return 0
 
-MOUTH_AR_THRESH = 0.6
+MOUTH_AR_THRESH = 0.58
 # (mStart, mEnd) = (49, 68)
 
-def mouth_open(frame, faces):
-    landmarks = np.array(faces[0].landmarks)[:, :2]
+def mouth_open(faces):
+    if not faces:
+        return
+    
+    face = None
+
+    for i in range(len(faces)):
+        if (faces[i].name == "verified" and faces[i].landmarks):
+            face = faces[i]
+            break
+    if not face:
+        for i in range(len(faces)):
+            if faces[i].landmarks:
+                face = faces[i]
+                break
+
+    if not face:
+        return
+    
+    landmarks = np.array(face.landmarks)[:, :2]
     outer_bottom = [61,146,91,181,84,17,314,405,321,375,291]
     outer_top = [61,185,40,39,37,0,267,269,270,409,291]
     inner_bottom = [78,95,88,178,87,14,317,402,318,324,308]
@@ -42,8 +54,7 @@ def mouth_open(frame, faces):
         mouth_obj.status = "mouth open"
     elif mar < MOUTH_AR_THRESH:
         mouth_obj.status = "mouth close"
-    # cv2.putText(frame, mouth_obj.status, (15,135),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,0,0),2)
-    # mouthHull = cv2.convexHull(mouth)
-    # cv2.drawContours(frame, [mouthHull], -1, (0, 255, 0), 1)
+    
+    face.mouth = mouth_obj
 
-    return mouth_obj
+    return

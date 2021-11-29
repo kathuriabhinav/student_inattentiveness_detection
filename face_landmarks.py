@@ -24,38 +24,35 @@ def normalized_to_pixel_coordinates(normalized_x, normalized_y, image_width, ima
 # results.multi_face_landmarks[0].landmark[0].x
 
 
-def get_landmarks(image, face_landmarks):
+def get_landmarks(face, face_landmarks):
     landmarks = []
-    image_rows, image_cols, _ = image.shape
+    image_rows, image_cols, _ = face.img.shape
+    x,y,_,_ = face.bbox
     for pt in face_landmarks:
         px = normalized_to_pixel_coordinates(pt.x, pt.y, image_cols, image_rows)
         if px:
-            px = px[0], px[1], pt.z
+            px = px[0]+x, px[1]+y, pt.z
             landmarks.append(px)
     return landmarks   
 
-def detect_landmarks(image, faces): #shouldn't run when multiple faces
-    hland = None
-    if len(faces)!=1:
+def detect_landmarks(frame, faces, det_conf = 0.7, track_conf = 0.7): #Assuming only one face in each face object
+    if not faces:
         return
-    with mp_face_mesh.FaceMesh(static_image_mode=False, max_num_faces=1, refine_landmarks=True, min_detection_confidence=0.7,
-                               min_tracking_confidence= 0.7) as face_mesh:
-    
-        # To improve performance, optionally mark the image as not writeable to
-        # pass by reference.
-        image.flags.writeable = False
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        results = face_mesh.process(image)
 
-        # Draw the face mesh annotations on the image.
-        image.flags.writeable = True
-        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    with mp_face_mesh.FaceMesh(static_image_mode=False, max_num_faces=2, refine_landmarks=True, min_detection_confidence=det_conf, min_tracking_confidence= track_conf) as face_mesh:
         
-        if results.multi_face_landmarks:
-            for face_landmarks in results.multi_face_landmarks:
-                faces[0].landmarks = get_landmarks(image, face_landmarks.landmark)
-                hland = np.array([(lm.x, lm.y, lm.z) for lm in face_landmarks.landmark])
-    return hland
-                
-                
-                
+        for face in faces:
+            # To improve performance, optionally mark the image as not writeable to
+            # pass by reference.
+            face.img.flags.writeable = False
+            face.img = cv2.cvtColor(face.img, cv2.COLOR_BGR2RGB)
+            
+            results = face_mesh.process(face.img)
+            if results.multi_face_landmarks:
+                face.landmarks = get_landmarks(face, results.multi_face_landmarks[0].landmark)
+                x,y,w,h = face.bbox
+                f_h, f_w,_ = frame.shape
+                face.hland = np.array([( ((lm.x * w)+x)/f_w , ((lm.y * h)+y)/f_h , lm.z) for lm in results.multi_face_landmarks[0].landmark])
+            
+            face.img.flags.writeable = True
+            face.img = cv2.cvtColor(face.img, cv2.COLOR_RGB2BGR)
