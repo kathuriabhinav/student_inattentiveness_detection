@@ -20,7 +20,7 @@ engine.setProperty('rate',rate - 50)
 #     144        153                 380       373
 #          145                            374
 
-EYE_AR_THRESH = 0.23  #threshold for blink
+EYE_AR_THRESH = 0.27  #threshold for blink
 EYE_AR_CONSEC_FRAMES = 25 #consecutive considered true
 MOUTH_THRESHOLD = 40
 
