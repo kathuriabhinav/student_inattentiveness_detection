@@ -25,7 +25,6 @@ def segment_list(items,segment_time,fps_assumed):
 def plot_main(frames,fps_assumed):
     segment_time = 1
     noface=[]
-    multiface=[]
     facerec=[]
     head=[]
     mouth=[]
@@ -37,7 +36,6 @@ def plot_main(frames,fps_assumed):
     no_of_frames = segment_time*fps_assumed
     for frame in frames:
         noface.append(frame.noface)
-        multiface.append(frame.multiface)
         facerec.append(frame.facerec)
         head.append(frame.head)
         mouth.append(frame.mouth)
@@ -47,9 +45,8 @@ def plot_main(frames,fps_assumed):
         cheat.append(frame.cheat)
         if(len(noface)%no_of_frames==0):
             seg.append(len(noface))
-    cheat_list = [noface, multiface, facerec, head, mouth, spoof, emotion, sleepy, cheat]
+    cheat_list = [noface, facerec, head, mouth, spoof, emotion, sleepy, cheat]
     titles_list = ["No face Detected", 
-    "Multiple faces Detected", 
     "User Authentication", 
     "Looking away from screen", 
     "Speaking", 
@@ -59,8 +56,8 @@ def plot_main(frames,fps_assumed):
     "Estimated Inattentiveness Status"]
     
     plt.figure(figsize=(12,26))
-    for i in range(9):
-        plt.subplot(9,1,i+1)  
+    for i in range(8):
+        plt.subplot(8,1,i+1)  
         plt.step(cheat_list[i],'r')
         plt.yticks([0,1]) 
         # plt.xticks(seg) 
