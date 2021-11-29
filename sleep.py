@@ -40,69 +40,94 @@ predictor = dlib.shape_predictor("models/shape_predictor_68_face_landmarks.dat")
 (rStart, rEnd) = face_utils.FACIAL_LANDMARKS_IDXS["right_eye"]
 (mStart, mEnd) = face_utils.FACIAL_LANDMARKS_IDXS["mouth"]
 
-def sleep_main(frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn):
+def sleep_main(faces,frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn):
     # frame = vs.read()
-    frame = imutils.resize(frame, width = 640)
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    
+    if not faces:
+        cv2.putText(frame, "return 1", (300, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
+        return sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn
+    if len(faces)!=1:
+        cv2.putText(frame, "return 2", (300, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
+        return sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn
 
-    rects = detector(gray,0)
+    if len(faces)==1:    
+    
+        temp = imutils.resize(frame, width = 640)
+        gray = cv2.cvtColor(temp, cv2.COLOR_BGR2GRAY)
 
-    for rect in rects:
-        shape = predictor(gray, rect)
-        shape = face_utils.shape_to_np(shape)
-        leftEye = shape[lStart:lEnd]
-        rightEye = shape[rStart:rEnd]
-        leftEAR = eye_aspect_ratio(leftEye)
-        rightEAR = eye_aspect_ratio(rightEye)
-        mouth = shape[mStart: mEnd]
-        mouthEAR = mouth_aspect_ratio(mouth)
+        rects = detector(gray,0)
 
-        ear = (leftEAR + rightEAR) / 2.0
-        leftEyeHull = cv2.convexHull(leftEye)
-        rightEyeHull = cv2.convexHull(rightEye)
-        mouthHull = cv2.convexHull(mouth)
-        cv2.drawContours(frame, [leftEyeHull], -1, (0, 255, 0), 1)
-        cv2.drawContours(frame, [rightEyeHull], -1, (0, 255, 0), 1)
-        cv2.drawContours(frame, [mouthHull], -1, (0, 255, 0), 1)
+        for rect in rects:
+            shape = predictor(gray, rect)
+            shape = face_utils.shape_to_np(shape)
+            leftEye = shape[lStart:lEnd]
+            rightEye = shape[rStart:rEnd]
+            leftEAR = eye_aspect_ratio(leftEye)
+            rightEAR = eye_aspect_ratio(rightEye)
+            mouth = shape[mStart: mEnd]
+            mouthEAR = mouth_aspect_ratio(mouth)
 
-        if mouthEAR > 30:
-            count_mouth += 1
-            if count_mouth >= 10:
-                if yawn_flag < 0:
-                    print("You are yawning")
-                    yawn_flag = 1
-                    total_yawn += 1
-                    cv2.putText(frame, "Yawn Detected", (300, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
+            ear = (leftEAR + rightEAR) / 2.0
+            leftEyeHull = cv2.convexHull(leftEye)
+            rightEyeHull = cv2.convexHull(rightEye)
+            mouthHull = cv2.convexHull(mouth)
+            cv2.drawContours(frame, [leftEyeHull], -1, (0, 255, 255), 1)
+            cv2.drawContours(frame, [rightEyeHull], -1, (0, 255, 255), 1)
+            cv2.drawContours(frame, [mouthHull], -1, (0, 255, 255), 1)
+
+            if mouthEAR > 30:
+                count_mouth += 1
+                if count_mouth >= 10:
+                    if yawn_flag < 0:
+                        print("You are yawning")
+                        yawn_flag = 1
+                        faces[0].drowsy=1
+                        total_yawn += 1
+                        cv2.putText(frame, "Yawn Detected", (300, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
+                    else:
+                        yawn_flag = 1
                 else:
-                    yawn_flag = 1
+                    yawn_flag = -1
             else:
+                count_mouth = 0
                 yawn_flag = -1
-        else:
-            count_mouth = 0
-            yawn_flag = -1
-        if ear <  EYE_AR_THRESH:
-            counter += 1
+            if ear <  EYE_AR_THRESH:
+                counter += 1
 
-            if counter >= EYE_AR_CONSEC_FRAMES:
-                if sleep_flag < 0:
-                    print("You are sleeping.")
-                    cv2.putText(frame, "Sleep Detected", (300, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
-                    sleep_flag = 1
-                    total += 1
+                if counter >= EYE_AR_CONSEC_FRAMES:
+                    if sleep_flag < 0:
+                        print("You are sleeping.")
+                        cv2.putText(frame, "Sleep Detected", (300, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
+                        sleep_flag = 1
+                        faces[0].sleepy=1
+                        total += 1
+                else:
+                    sleep_flag = -1
             else:
+                counter = 0
                 sleep_flag = -1
-        else:
-            counter = 0
-            sleep_flag = -1
 
-        cv2.putText(frame, "Total Sleeps: {}".format(total), (15,130), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
-        cv2.putText(frame, "Total Yawns: {}".format(total_yawn), (15,105), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
-        cv2.putText(frame, "EAR: {:.2f}".format(ear), (15,155), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
-        cv2.putText(frame, "MAR: {:.2f}".format(mouthEAR), (15,180), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
-        if total+total_yawn > 4:
-            print("playing sound")
-            engine.say("You are sleeping. Please be Attentive")
-            engine.runAndWait()
-            total = 0
-            total_yawn = 0
-    return frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn
+            cv2.putText(frame, "Total Sleeps: {}".format(total), (15,200), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 2)
+            cv2.putText(frame, "Total Yawns: {}".format(total_yawn), (15,230), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 2)
+            cv2.putText(frame, "EAR: {:.2f}".format(ear), (15,260), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 2)
+            cv2.putText(frame, "MAR: {:.2f}".format(mouthEAR), (15,290), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 2)
+            if total > 2:
+                print("playing sound")
+                engine.say("You are drowsy. Please be Attentive")
+                engine.runAndWait()
+                total = 0
+                total_yawn = 0
+            elif total_yawn > 2:
+                print("playing sound")
+                engine.say("You are drowsy. Please be Attentive")
+                engine.runAndWait()
+                total = 0
+                total_yawn = 0
+            elif total+total_yawn > 2:
+                print("playing sound")
+                engine.say("You are drowsy. Please be Attentive")
+                engine.runAndWait()
+                total = 0
+                total_yawn = 0
+
+    return sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn

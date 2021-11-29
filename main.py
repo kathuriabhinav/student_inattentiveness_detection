@@ -58,7 +58,7 @@ if __name__ == "__main__":
         headpose_est(frame, faces)
         mouth_open(faces)
         emotion_recog(faces)
-        frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn = sleep_main(frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn)
+        sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn = sleep_main(faces,frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_yawn)
 
         print_faces(frame, faces)
 
