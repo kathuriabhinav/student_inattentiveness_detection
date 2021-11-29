@@ -14,7 +14,7 @@ def mouth_aspect_ratio(landmarks):
 	    C = dist.euclidean(landmarks[61,:], landmarks[291,:]) # 49, 55 #media(61,291)
 	    mar = (A + B) / (2.0 * C)
 	    return mar
-    return 0
+    return MOUTH_AR_THRESH + 0.02
 
 MOUTH_AR_THRESH = 0.58
 # (mStart, mEnd) = (49, 68)
