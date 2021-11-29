@@ -128,7 +128,7 @@ def detect_cheating_segment(frames, fps):
         or (mouth_mean>=mouth_cheat_threshold) 
         or (spoof_mean>=spoof_cheat_threshold) 
         or (emotion_mean>=emotion_cheat_threshold) 
-        or (sleepy_mean>=sleepy_cheat_threshold)):
+        or (sleepy_mean>sleepy_cheat_threshold)):
             seg.cheat = 1
  
     return segments, cheat_per_frame

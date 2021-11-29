@@ -43,7 +43,7 @@ def plot_main(frames,fps_assumed):
         mouth.append(frame.mouth)
         spoof.append(frame.spoof)
         emotion.append(frame.emotion)
-        sleepy.append(frame.sleepy)
+        sleepy.append(frame.framesleepy)
         cheat.append(frame.cheat)
         if(len(noface)%no_of_frames==0):
             seg.append(len(noface))

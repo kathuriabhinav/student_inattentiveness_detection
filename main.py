@@ -73,7 +73,8 @@ if __name__ == "__main__":
             break
 
     t2 = time.time()
-    fps = int(frames[-1].count/(t2-t1))
+    if frames:
+        fps = int(frames[-1].count/(t2-t1))
 
     cap.release()
     cv2.destroyAllWindows()

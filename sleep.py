@@ -117,6 +117,7 @@ def sleep_main(faces,frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_
         cv2.putText(frame, "MAR: {:.2f}".format(mouthEAR), (15,290), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 190, 190), 2)
         if total > 2:
             face.sleepy=1
+            face.framesleepy = 1
             print("playing sound")
             engine.say("You are drowsy. Please be Attentive")
             engine.runAndWait()
@@ -124,6 +125,7 @@ def sleep_main(faces,frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_
             total_yawn = 0
         elif total_yawn > 2:
             face.sleepy=1
+            face.framesleepy = 1
             print("playing sound")
             engine.say("You are drowsy. Please be Attentive")
             engine.runAndWait()
@@ -131,6 +133,7 @@ def sleep_main(faces,frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_
             total_yawn = 0
         elif total+total_yawn > 2:
             face.sleepy=1
+            face.framesleepy = 1
             print("playing sound")
             engine.say("You are drowsy. Please be Attentive")
             engine.runAndWait()
