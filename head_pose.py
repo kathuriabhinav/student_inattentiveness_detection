@@ -145,13 +145,13 @@ def headpose_est(frame, faces):
         hdir = None
         vdir = None
 
-        if ang2 >= 20 :
+        if ang2 >= 20 and ang2 <=85 :
             tempstr="Head left"
-        elif ang2 <= -20:
+        elif ang2 <= -20 and ang2>=-85 :
             tempstr="Head right"
-        elif ang1 >= 20:
+        elif ang1 >= 20 and ang1 <=85:
             tempstr="Head up"
-        elif ang1 <= -20: #10
+        elif ang1 <= -20 and ang1>=-85: #10
             tempstr="Head down"
         else:
             tempstr="Head Straight"
