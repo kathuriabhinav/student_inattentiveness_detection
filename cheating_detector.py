@@ -100,6 +100,15 @@ def detect_cheating_segment(frames, fps):
     sleepy_per_frame = list(map(lambda x: x.sleepy , frames))
     cheat_per_frame = list(map(lambda x: x.cheat , frames))
 
+    titles_list = ["noface_per_frame = ", "facerec_per_frame = ", "head_per_frame = ", "mouth_per_frame = ", "spoof_per_frame = ", 
+    "emotion_per_frame = ", "sleepy_per_frame = ", "cheat_per_frame = "]
+    values_list = [noface_per_frame, facerec_per_frame, head_per_frame, mouth_per_frame, spoof_per_frame, emotion_per_frame, 
+    sleepy_per_frame, cheat_per_frame]
+    for i in range(len(values_list)):
+        print(titles_list[i], end="")
+        print(values_list[i])
+        
+
     for i in range(int(per*numframes_wd), num_frames, int(per*numframes_wd)):
         j = i+numframes_wd if i+numframes_wd < num_frames else num_frames-1
         

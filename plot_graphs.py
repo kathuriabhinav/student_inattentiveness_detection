@@ -102,5 +102,5 @@ def plot_segments(segments, original=[]):
     plt.figtext(0.5, 0.9,stats, ha="center", fontsize=12, bbox={"facecolor":"orange", "alpha":0.5, "pad":3})
     plt.savefig("results/Inattentiveness_detection_"+ time.strftime("%Y%m%d-%H%M%S") + ".png",dpi=300)
     plt.show()
-    print(x)
-    print(detected)
+    # print(x)
+    # print(detected)
