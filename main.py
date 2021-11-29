@@ -40,7 +40,7 @@ input_embeddings, input_im_list = register_user(frmodel,0)
 
 if __name__ == "__main__":
     cap = cv2.VideoCapture(0)
-    cv2.namedWindow('PROCTORING ON')
+    cv2.namedWindow('MONITORING ON')
     frames=[]
     t1 = time.time()
     while(True):
@@ -65,9 +65,9 @@ if __name__ == "__main__":
         cheat_temp = detect_cheating_frame(faces,frames)
         frames.append(cheat_temp)
         if cheat_temp.cheat>0:
-            cv2.putText(frame, "Cheating suspected", (15,130), font, 0.5, (0,0,255),2)
+            cv2.putText(frame, "INATTENTIVE", (15,150), font, 1, (0,0,255),2)
 
-        cv2.imshow('PROCTORING ON',  frame)
+        cv2.imshow('MONITORING ON',  frame)
 
         if cv2.waitKey(1) & 0xFF == 27: 
             break
@@ -79,6 +79,6 @@ if __name__ == "__main__":
     cv2.destroyAllWindows()
 
 
-    # segments, sglen = detect_cheating_segment(frames, fps)
-    # plot_main(frames, fps)
-    # plot_segments(segments, [])
+    segments, sglen = detect_cheating_segment(frames, fps)
+    plot_main(frames, fps)
+    plot_segments(segments, [])

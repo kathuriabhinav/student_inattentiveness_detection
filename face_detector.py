@@ -30,7 +30,7 @@ class Face:
         self.emotion_score = None
         # sleep detection
         self.sleepy = None
-        self.drowsy = None
+        self.framesleepy = None
 
 # Crop face based on its bounding box
 def get_face(frame, bbox):

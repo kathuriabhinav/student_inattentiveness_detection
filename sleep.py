@@ -79,9 +79,9 @@ def sleep_main(faces,frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_
                 count_mouth += 1
                 if count_mouth >= 10:
                     if yawn_flag < 0:
+                        faces[0].framesleepy=1
                         print("You are yawning")
                         yawn_flag = 1
-                        faces[0].drowsy=1
                         total_yawn += 1
                         cv2.putText(frame, "Yawn Detected", (300, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
                     else:
@@ -96,10 +96,10 @@ def sleep_main(faces,frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_
 
                 if counter >= EYE_AR_CONSEC_FRAMES:
                     if sleep_flag < 0:
+                        faces[0].framesleepy=1
                         print("You are sleeping.")
                         cv2.putText(frame, "Sleep Detected", (300, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
                         sleep_flag = 1
-                        faces[0].sleepy=1
                         total += 1
                 else:
                     sleep_flag = -1
@@ -112,18 +112,21 @@ def sleep_main(faces,frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_
             cv2.putText(frame, "EAR: {:.2f}".format(ear), (15,260), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 2)
             cv2.putText(frame, "MAR: {:.2f}".format(mouthEAR), (15,290), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 2)
             if total > 2:
+                faces[0].sleepy=1
                 print("playing sound")
                 engine.say("You are drowsy. Please be Attentive")
                 engine.runAndWait()
                 total = 0
                 total_yawn = 0
             elif total_yawn > 2:
+                faces[0].sleepy=1
                 print("playing sound")
                 engine.say("You are drowsy. Please be Attentive")
                 engine.runAndWait()
                 total = 0
                 total_yawn = 0
             elif total+total_yawn > 2:
+                faces[0].sleepy=1
                 print("playing sound")
                 engine.say("You are drowsy. Please be Attentive")
                 engine.runAndWait()
