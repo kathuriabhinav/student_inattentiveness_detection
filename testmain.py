@@ -53,7 +53,6 @@ if __name__ == "__main__":
 
     cv2.namedWindow('MONITORING ON')
     frames=[]
-    t1 = time.time()
     while(True):
         ret, frame = cap.read()
         frame = cv2.flip(frame, 1)
@@ -84,15 +83,11 @@ if __name__ == "__main__":
         if cv2.waitKey(1) & 0xFF == 27: 
             break
 
-    t2 = time.time()
-    if frames:
-        fps = int(frames[-1].count/(t2-t1))
-
     cap.release()
     result.release()
     cv2.destroyAllWindows()
 
-
+    fps,_,_ = input_data(labels__path)
     segments = detect_cheating_segment(frames, fps)
     plot_main(frames, fps)
     det_segmentwise = detected_cheating(segments)
