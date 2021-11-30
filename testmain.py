@@ -32,8 +32,8 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 pTime = [0]
 
 ###########################
-video_path = "dataset/anirudh/anirudh.mp4"
-labels_path = "dataset/anirudh/labels.txt"
+video_path = "subject1/anirudh.mp4"
+labels_path = "subject1/labels.txt"
 ###########################
 
 
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     result.release()
     cv2.destroyAllWindows()
 
-    fps,_,_ = input_data(labels__path)
+    fps,_,_ = input_data(labels_path)
     segments = detect_cheating_segment(frames, fps)
     plot_main(frames, fps)
     det_segmentwise = detected_cheating(segments)
