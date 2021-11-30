@@ -59,7 +59,7 @@ def register_user(frmodel,input_dir):
     while cam.isOpened():  
         ret, frame = cam.read()
         if ret:
-            cv2.putText(frame, 'Press r to capture image' ,(30,60),cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255,0,0),2)
+            cv2.putText(frame, 'Press r to capture image for Face Verification' ,(30,60),cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255,0,0),2)
             cv2.imshow('Face registration',frame)#, cv2.resize(frame, dsize= (960, 540)))
         
             if cv2.waitKey(1) & 0xFF == ord('r'):

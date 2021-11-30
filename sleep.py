@@ -20,9 +20,10 @@ engine.setProperty('rate',rate - 50)
 #     144        153                 380       373
 #          145                            374
 
-EYE_AR_THRESH = 0.10  #threshold for blink
+EYE_AR_THRESH = 0.2  #threshold for blink
 EYE_AR_CONSEC_FRAMES = 15 #consecutive considered true
 MOUTH_THRESHOLD = 0.9
+MOUTH_AR_CONSEC_FRAMES = 5
 
 def eye_aspect_ratio(landmarks, dir):
     ear = 0
@@ -88,7 +89,7 @@ def sleep_main(faces,frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_
 
         if mouthEAR > MOUTH_THRESHOLD:
             count_mouth += 1
-            if count_mouth >= 10:
+            if count_mouth >= MOUTH_AR_CONSEC_FRAMES:
                 if yawn_flag < 0:
                     face.framesleepy=1
                     print("You are yawning")
@@ -102,7 +103,8 @@ def sleep_main(faces,frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_
         else:
             count_mouth = 0
             yawn_flag = -1
-        if ear <  EYE_AR_THRESH:
+
+        if ear < EYE_AR_THRESH or ear > 0.95:
             counter += 1
 
             if counter >= EYE_AR_CONSEC_FRAMES:

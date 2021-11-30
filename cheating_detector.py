@@ -73,14 +73,14 @@ def detect_cheating_frame(faces,frames):
 def detect_cheating_segment(frames, fps):
 #*************
     # Best values for the following parameters are chosen
-    window_length = 5
+    window_length = 15
     per = 0.2
     noface_cheat_threshold = 0.3
     facerec_cheat_threshold = 0.6
     head_cheat_threshold = 0.3
-    mouth_cheat_threshold = 0.6
-    spoof_cheat_threshold = 0.3
-    emotion_cheat_threshold = 0.3
+    mouth_cheat_threshold = 0.3
+    spoof_cheat_threshold = 0.6
+    emotion_cheat_threshold = 0.5
     sleepy_cheat_threshold = 0
 #*************
     num_frames = len(frames)
@@ -100,13 +100,13 @@ def detect_cheating_segment(frames, fps):
     sleepy_per_frame = list(map(lambda x: x.sleepy , frames))
     cheat_per_frame = list(map(lambda x: x.cheat , frames))
 
-    titles_list = ["noface_per_frame = ", "facerec_per_frame = ", "head_per_frame = ", "mouth_per_frame = ", "spoof_per_frame = ", 
-    "emotion_per_frame = ", "sleepy_per_frame = ", "cheat_per_frame = "]
-    values_list = [noface_per_frame, facerec_per_frame, head_per_frame, mouth_per_frame, spoof_per_frame, emotion_per_frame, 
-    sleepy_per_frame, cheat_per_frame]
-    for i in range(len(values_list)):
-        print(titles_list[i], end="")
-        print(values_list[i])
+    # titles_list = ["noface_per_frame = ", "facerec_per_frame = ", "head_per_frame = ", "mouth_per_frame = ", "spoof_per_frame = ", 
+    # "emotion_per_frame = ", "sleepy_per_frame = ", "cheat_per_frame = "]
+    # values_list = [noface_per_frame, facerec_per_frame, head_per_frame, mouth_per_frame, spoof_per_frame, emotion_per_frame, 
+    # sleepy_per_frame, cheat_per_frame]
+    # for i in range(len(values_list)):
+    #     print(titles_list[i], end="")
+    #     print(values_list[i])
         
 
     for i in range(int(per*numframes_wd), num_frames, int(per*numframes_wd)):
@@ -134,7 +134,7 @@ def detect_cheating_segment(frames, fps):
         or (sleepy_mean>sleepy_cheat_threshold)):
             seg.cheat = 1
  
-    return segments, cheat_per_frame
+    return segments
 
 def detected_cheating(segments):
     detected = []
@@ -145,8 +145,8 @@ def detected_cheating(segments):
 
 ## FUNCTIONS RELATED TO ORIGINAL TRUTH VALUES: 
 
-def truths_per_segment(data_path, sglen):
-    wl = 5 #window_length
+def truths_per_segment(data_path):
+    wl = 15 #window_length
     per = 0.2
     fps,video_length,input_text = input_data(data_path)
     num_frames = fps*video_length

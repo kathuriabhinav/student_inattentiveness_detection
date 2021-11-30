@@ -31,25 +31,19 @@ total_yawn = 0
 font = cv2.FONT_HERSHEY_SIMPLEX 
 pTime = [0]
 
-###########################
-video_path = 0#"dataset/anirudh.mp4"
-outputvideo_fps = 18
-###########################
-
-
 # Register User
 frmodel = loadFaceNet512Model()
 input_embeddings, input_im_list = register_user(frmodel, 0)
 
 if __name__ == "__main__":
     
-    cap = cv2.VideoCapture(video_path)
+    cap = cv2.VideoCapture(0)
     frame_width = int(cap.get(3))
     frame_height = int(cap.get(4))
     size = (frame_width, frame_height)
     result = cv2.VideoWriter('output_video.avi', 
                          cv2.VideoWriter_fourcc(*'MJPG'),
-                         outputvideo_fps, size)
+                         10, size)
 
     cv2.namedWindow('MONITORING ON')
     frames=[]
@@ -93,6 +87,6 @@ if __name__ == "__main__":
     cv2.destroyAllWindows()
 
 
-    segments, sglen = detect_cheating_segment(frames, fps)
+    segments = detect_cheating_segment(frames, fps)
     plot_main(frames, fps)
     plot_segments(segments, [])
