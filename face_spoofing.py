@@ -14,9 +14,9 @@ model.load_weights('models/antispoofing_models/antispoofing_model.h5')
 def spoof_detector(faces):
     if not faces:
         return
+        
     for face in faces:
-        x,y,w,h = face.bbox[0],face.bbox[1],face.bbox[2],face.bbox[3]
-        resized_face = cv2.resize(face.img,(160,160))
+        resized_face = cv2.resize(face.origimg,(160,160))
         resized_face = resized_face.astype("float") / 255.0
         resized_face = np.expand_dims(resized_face, axis=0)
         # pass the face ROI through the trained liveness detector

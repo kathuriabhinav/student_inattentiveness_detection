@@ -7,6 +7,7 @@ from tensorflow.keras.preprocessing import image
 model1=tf.keras.models.load_model("models/modelface_network1.h5")
 objects = ('angry', 'disgust', 'fear', 'happy', 'sad', 'surprise', 'neutral')
 
+
 def emotion_recog(faces):
     if not faces:
         return
@@ -14,17 +15,16 @@ def emotion_recog(faces):
     face = None
 
     for i in range(len(faces)):
-        if (faces[i].name == "verified" and type(faces[i].hland) is np.ndarray):
+        if (faces[i].name == "verified"):
             face = faces[i]
             break
+    
     if not face:
-        for i in range(len(faces)):
-            if type(faces[i].hland) is np.ndarray:
-                face = faces[i]
-                break
-        
+        face = faces[0]
+
     if face:
-        img= cv2.cvtColor(face.img ,cv2.COLOR_BGR2GRAY)
+        img = face.origimg
+        img= cv2.cvtColor(img ,cv2.COLOR_BGR2GRAY)
         img = cv2.resize(img,(48,48))
         arr= image.img_to_array(img)
         arr = np.expand_dims(arr, axis = 0)
@@ -35,4 +35,5 @@ def emotion_recog(faces):
             face.emotion = "happy"
         else:
             face.emotion = "neutral"
+            
         face.emotion_score = 1 - custom[0][3]

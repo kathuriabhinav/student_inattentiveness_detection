@@ -9,6 +9,7 @@ class Face:
         self.bbox = None
         self.origbbox = None
         self.img = None
+        self.origimg = None
         # Facial Landmarks
         self.landmarks = None
         self.hland = None
@@ -85,6 +86,7 @@ def detect_faces(frame, confidence = 0.7):
             face.confidence = detection.score
             face.bbox = expand_bbox(frame, face.origbbox)
             face.img = get_face(frame, face.bbox)
+            face.origimg = get_face(frame, face.origbbox)
             faces.append(face)
         
     return faces

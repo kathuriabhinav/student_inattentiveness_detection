@@ -95,7 +95,7 @@ def sleep_main(faces,frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_
                     print("You are yawning")
                     yawn_flag = 1
                     total_yawn += 1
-                    cv2.putText(frame, "Yawn Detected", (300, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 190, 190), 2)
+                    # cv2.putText(frame, "Yawn Detected", (300, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255,0,0), 2)
                 else:
                     yawn_flag = 1
             else:
@@ -111,7 +111,7 @@ def sleep_main(faces,frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_
                 if sleep_flag < 0:
                     face.framesleepy=1
                     print("You are sleeping.")
-                    cv2.putText(frame, "Sleep Detected", (300, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 190, 190), 2)
+                    # cv2.putText(frame, "Sleep Detected", (300, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255,0,0), 2)
                     sleep_flag = 1
                     total += 1
             else:
@@ -120,10 +120,10 @@ def sleep_main(faces,frame,sleep_flag,yawn_flag,count_mouth,counter,total,total_
             counter = 0
             sleep_flag = -1
 
-        cv2.putText(frame, "Total Sleeps: {}".format(total), (15,200), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 190, 190), 2)
-        cv2.putText(frame, "Total Yawns: {}".format(total_yawn), (15,230), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 190, 190), 2)
-        cv2.putText(frame, "EAR: {:.2f}".format(ear), (15,260), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 190, 190), 2)
-        cv2.putText(frame, "MAR: {:.2f}".format(mouthEAR), (15,290), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 190, 190), 2)
+        cv2.putText(frame, "Total Sleeps: {}".format(total), (15,200), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,0,0), 2)
+        cv2.putText(frame, "Total Yawns: {}".format(total_yawn), (15,230), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,0,0), 2)
+        cv2.putText(frame, "EAR: {:.2f}".format(ear), (15,260), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,0,0), 2)
+        cv2.putText(frame, "MAR: {:.2f}".format(mouthEAR), (15,290), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,0,0), 2)
         if total > 2:
             face.sleepy=1
             face.framesleepy = 1
